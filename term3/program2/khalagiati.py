@@ -2,6 +2,7 @@ import collections
 import random
 from mcpi_e.minecraft import *
 from mcpi_e.block import *
+
 collections.Iterable = collections.abc.Iterable
 server_address = "Pycraft.yasan.ac"
 python_port = 11130
@@ -18,7 +19,7 @@ depth = 10
 # ابعاد سقف
 roof_width = width
 roof_depth = depth
-roof_height = 5
+roof_height = height
 # مختصات مرکز سقف (بر اساس مختصات خانه تنظیم شده)
 roof_x = x + width // 2
 roof_y = y + height
