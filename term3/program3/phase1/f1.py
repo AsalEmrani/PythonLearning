@@ -19,8 +19,8 @@ exit_block = STONE
 processing = True  # متغیر برای تشخیص دور اول یا دوم
 mc.postToChat("بلاک در حال پردازش مسیر است...")
 
-while processing: 
-    if mc.getBlock(x, y, z) == exit_block:  # بررسی پایان مسیر
+while True: 
+    if mc.getBlock(x, y, z) == STONE.id :  # بررسی پایان مسیر
         mc.postToChat("شما از هزارتو خارج شدید!")
         processing = False
         break
@@ -88,7 +88,6 @@ while processing:
 
     if mc.getBlock(x, y-1, z) == STONE.id:  # پایان مسیر
         mc.postToChat("*** مسیر پردازش شد! ***")
-        processing = False  # پایان دور اول
         break
 
     sleep(0.1)
