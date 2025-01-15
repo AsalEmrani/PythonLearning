@@ -1,23 +1,19 @@
-from PIL import Image
-from math import sqrt, pow
-
+from math import *
 import collections
-from random import *
-from time import *
-
 from mcpi_e.minecraft import *
 from mcpi_e.block import *
+from PIL import Image
+
 collections.Iterable = collections.abc.Iterable
 server_address = "Pycraft.yasan.ac"
 python_port = 11130
 player_name = "a_emrani"
 
 mc = Minecraft.create(server_address, python_port, player_name)
+px, py, pz = mc.player.getTilePos() 
 
-x, y, z = mc.player.getTilePos() 
-
-# لیست رنگ‌های بلوک‌های ماینکرفت
 blockColorList = [
+    # [[R,G,B],[ID,Data]]
     [[0, 0, 0], [0, 0]],  # Air
     [[125, 125, 125], [1, 0]],  # Smooth Stone
     [[133, 96, 66], [3, 0]],  # Dirt
@@ -66,46 +62,33 @@ blockColorList = [
     [[137, 112, 64], [89, 0]]  # Glowstone
 ]
 
+
 def getBlockColor(RGB):
-    """تطبیق رنگ RGB به بلوک مناسب ماینکرفت"""
     similarBlock = [0, 0]
     minDistance = float('inf')
     for index in blockColorList:
-        eachDistance = sqrt(
-            pow(RGB[0] - index[0][0], 2) + 
-            pow(RGB[1] - index[0][1], 2) + 
-            pow(RGB[2] - index[0][2], 2)
-        )
-        if eachDistance < minDistance:
+        eachDistance = colorDistance(RGB, index[0])
+
+        if (eachDistance < minDistance):
             minDistance = eachDistance
             similarBlock = index[1]
+
     return similarBlock
 
-def map_pixels_to_blocks(pixel_data, size):
-    """تبدیل پیکسل‌های تصویر به بلوک‌های ماینکرفت"""
-    width, height = size
-    block_map = []
-    for y in range(height):
-        row = []
-        for x in range(width):
-            pixel = pixel_data[y * width + x]
-            block = getBlockColor(pixel)
-            row.append(block)
-        block_map.append(row)
-    return block_map
 
-# باز کردن تصویر
-image_path = "happy-emoji.png"  # مسیر تصویر
-original_image = Image.open(image_path)
+def colorDistance(colorRGB, blockRGB):
+    return sqrt(
+        pow(colorRGB[0] - blockRGB[0], 2) + pow(colorRGB[1] - blockRGB[1], 2) + pow(colorRGB[2] - blockRGB[2], 2))
 
-# تغییر اندازه تصویر برای ماینکرفت
-minecraft_size = (32, 32)
-resized_image = original_image.resize(minecraft_size).convert("RGB")
-pixel_data = list(resized_image.getdata())
 
-# تولید نقشه بلوک‌ها
-block_map = map_pixels_to_blocks(pixel_data, resized_image.size)
+# image = Image.open('c:\img\python-logo.png')
+# image = Image.open('c:\img\happy-emoji.png')
+image = Image.open('c:\img\horse.png')
+width,height = image.size
 
-# ذخیره یا نمایش نقشه بلوک‌ها
-for row in block_map:
-    print(row)
+for x in range(width) :
+    for y in range(height) :
+        rgb = image.getpixel((x,y))
+        block = getBlockColor(rgb)
+        block_parametrs = Block(block[0], block[1])
+        mc.setBlock(y+px, py, x+pz ,block_parametrs)
