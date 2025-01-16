@@ -83,7 +83,8 @@ def colorDistance(colorRGB, blockRGB):
 
 # image = Image.open('c:\img\python-logo.png')
 # image = Image.open('c:\img\happy-emoji.png')
-image = Image.open('c:\img\horse.png')
+# image = Image.open('c:\img\horse.png')
+
 width,height = image.size
 
 for x in range(width) :
@@ -91,4 +92,4 @@ for x in range(width) :
         rgb = image.getpixel((x,y))
         block = getBlockColor(rgb)
         block_parametrs = Block(block[0], block[1])
-        mc.setBlock(y+px, py, x+pz ,block_parametrs)
+        mc.setBlock(y+px, py, x+pz, block_parametrs)
